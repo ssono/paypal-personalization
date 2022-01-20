@@ -9,9 +9,10 @@ function getPayPalDomain() : string {
 }
 
 export function buildPayPalUrl(path : string = '') : string {
+    const domain = 'https://localhost.paypal.com:8443';
     return (__TEST__ && __WEB__)
-        ? `${ getActualDomain() }${ path }`
-        : `${ getPayPalDomain() }${ path }`;
+        ? `${ domain }${ path }`
+        : `${ domain }${ path }`;
 }
 
 export function getPayPalLoggerUrl() : string {

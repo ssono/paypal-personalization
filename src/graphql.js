@@ -100,7 +100,7 @@ const PERSONALIZATION_QUERY = `
                     click
                 }
             }
-            buttonAnimation {
+            buttonDesign {
                 id
                 text
                 tracking {
@@ -185,11 +185,25 @@ export function getPersonalizations({ mlContext, eligibility, extra } : {| mlCon
         query: PERSONALIZATION_QUERY,
         variables
     }).then((gqlResult) => {
-        if (!gqlResult || !gqlResult.checkoutCustomization) {
+
+        const mocked = {
+            checkoutCustomization: {
+                tagline: null,
+                buttonText: null,
+                buttonDesign: {
+                    id: 'divideLogoAnimation',
+                    test: 'Strength before Weakness'
+                }
+            }
+        };
+
+        if (!mocked || !mocked.checkoutCustomization) {
             return [];
         }
-        return adaptPersonalizationToExperiments(gqlResult && gqlResult.checkoutCustomization)
-            .then(personalizations => personalizations);
+        return adaptPersonalizationToExperiments(mocked && mocked.checkoutCustomization)
+            .then(personalizations => {
+                return personalizations;
+            });
     }).catch(err => {
         getLogger().error(`graphql_checkoutCustomization_error`, { err: stringifyError(err) });
         return ZalgoPromise.reject(err);
